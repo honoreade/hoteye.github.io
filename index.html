@@ -5,23 +5,89 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Media Houses</title>
         <meta name="description" content="A collection of embedded media from various media houses.">
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                background-color: #f0f0f0;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            h1, h2, h3 {
+                text-align: center;
+                color: #333;
+            }
+            .media-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 20px;
+                justify-items: center;
+            }
+            iframe {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            ul {
+                list-style: none;
+                padding: 0;
+                text-align: center;
+            }
+            li {
+                margin: 10px 0;
+            }
+            a {
+                text-decoration: none;
+                color: #007bff;
+                font-weight: bold;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+        </style>
     </head>
     <body>
-        <h1>Media Houses</h1>
+        <div class="container">
+            <h1>Media Houses</h1>
         <hr>
 
-        <!-- TuneIn Radio Players -->
-        <iframe src="https://tunein.com/embed/player/s281307/" style="width:400px; height:100px;" scrolling="no" frameborder="no"></iframe>
-        <iframe src="https://tunein.com/embed/player/s274564/" style="width:400px; height:100px;" scrolling="no" frameborder="no"></iframe>
+        <h2>TV Stations</h2>
+        <h3>RBA TV Stations</h3>
+        <ul>
+            <li><a href="https://rba.co.rw/tv" target="_blank">RBA TV</a></li>
+            <li><a href="https://rba.co.rw/kc2" target="_blank">KC2 TV</a></li>
+        </ul>
+        <div class="media-grid">
+            <iframe width="400" height="500" frameborder="0" src="https://www.bbc.com/news/av-embeds/65021583"></iframe>
+        </div>
 
-        <!-- RBA Media -->
-        <iframe src="http://listen.rba.co.rw/radios/radiorwanda.html" style="width:400px; height:300px;" scrolling="no" frameborder="no"></iframe>
-        <!-- RBA TV stream is no longer available -->
-
-        <!-- Trinket Python IDE -->
-        <iframe src="https://trinket.io/embed/python3/bd68265575" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>        
+        <h2>Radio Stations</h2>
+        <div class="media-grid">
+            <iframe src="https://tunein.com/embed/player/s281307/" style="width:400px; height:100px;" scrolling="no" frameborder="no"></iframe>
+            <iframe src="https://tunein.com/embed/player/s274564/" style="width:400px; height:100px;" scrolling="no" frameborder="no"></iframe>
+            <iframe src="http://listen.rba.co.rw/radios/radiorwanda.html" style="width:400px; height:300px;" scrolling="no" frameborder="no"></iframe>
+        </div>
         
-        <!-- BBC News -->
-        <iframe width="400" height="500" frameborder="0" src="https://www.bbc.com/news/av-embeds/65021583"></iframe>
+        <h3>RBA Radio Stations</h3>
+        <ul>
+            <li><a href="https://rba.co.rw/radio/1/Radio-Rwanda" target="_blank">Radio Rwanda</a></li>
+            <li><a href="https://rba.co.rw/radio/7/Magic-Fm" target="_blank">Magic FM</a></li>
+            <li><a href="https://rba.co.rw/radio/2/Radio-Rubavu" target="_blank">Radio Rubavu</a></li>
+            <li><a href="https://rba.co.rw/radio/3/Radio-Nyagatare" target="_blank">Radio Nyagatare</a></li>
+            <li><a href="https://rba.co.rw/radio/8/Radio-Inteko" target="_blank">Radio Inteko</a></li>
+            <li><a href="https://rba.co.rw/radio/5/Radio-Huye" target="_blank">Radio Huye</a></li>
+            <li><a href="https://rba.co.rw/radio/4/Radio-Musanze" target="_blank">Radio Musanze</a></li>
+            <li><a href="https://rba.co.rw/radio/6/Radio-Rusizi" target="_blank">Radio Rusizi</a></li>
+        </ul>
+
+        <h2>Other</h2>
+        <div class="media-grid">
+            <!-- Trinket Python IDE -->
+            <iframe src="https://trinket.io/embed/python3/bd68265575" width="100%" height="356" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+        </div>
+    </div>
     </body>
 </html>
