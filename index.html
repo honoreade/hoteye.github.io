@@ -57,6 +57,7 @@
         <h2>TV Stations</h2>
         <div class="media-grid">
             <video id="rtv-video" width="400" controls></video>
+            <video id="kc2-video" width="400" controls></video>
         </div>
 
         <h2>Radio Stations</h2>
@@ -88,6 +89,17 @@
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED,function() {
           video.play();
+        });
+      }
+
+      var kc2Video = document.getElementById('kc2-video');
+      var kc2HlsUrl = 'https://5c46fa289c89f.streamlock.net:443/kc2/kc2/playlist.m3u8';
+      if(Hls.isSupported()) {
+        var kc2Hls = new Hls();
+        kc2Hls.loadSource(kc2HlsUrl);
+        kc2Hls.attachMedia(kc2Video);
+        kc2Hls.on(Hls.Events.MANIFEST_PARSED,function() {
+          kc2Video.play();
         });
       }
     </script>
