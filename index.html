@@ -55,11 +55,10 @@
         <hr>
 
         <h2>TV Stations</h2>
-        <h3>RBA TV Stations</h3>
-        <ul>
-            <li><a href="https://rba.co.rw/tv" target="_blank">RBA TV</a></li>
-            <li><a href="https://rba.co.rw/kc2" target="_blank">KC2 TV</a></li>
-        </ul>
+        <div class="media-grid">
+            <video id="rtv-video" width="400" controls></video>
+        </div>
+
         <h2>Radio Stations</h2>
         <div class="media-grid">
             <iframe src="https://tunein.com/embed/player/s281307/" style="width:400px; height:100px;" scrolling="no" frameborder="no"></iframe>
@@ -79,5 +78,18 @@
             <li><a href="https://rba.co.rw/radio/6/Radio-Rusizi" target="_blank">Radio Rusizi</a></li>
         </ul>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+      var video = document.getElementById('rtv-video');
+      var hlsUrl = 'https://5c46fa289c89f.streamlock.net:443/rtv25/rtv/playlist.m3u8';
+      if(Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(hlsUrl);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED,function() {
+          video.play();
+        });
+      }
+    </script>
     </body>
 </html>
