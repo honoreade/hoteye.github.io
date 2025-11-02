@@ -5,143 +5,46 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Media Houses</title>
         <meta name="description" content="A collection of embedded media from various media houses.">
-        <style>
-            body {
-                font-family: sans-serif;
-                margin: 0;
-                background-color: #f0f0f0;
-            }
-            .container {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-            h1, h2, h3 {
-                text-align: center;
-                color: #333;
-            }
-            .media-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-                gap: 20px;
-                justify-items: center;
-            }
-            iframe {
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            ul {
-                list-style: none;
-                padding: 0;
-                text-align: center;
-            }
-            li {
-                margin: 10px 0;
-            }
-            a {
-                text-decoration: none;
-                color: #007bff;
-                font-weight: bold;
-            }
-            a:hover {
-                text-decoration: underline;
-            }
-            .audio-container {
-                width: 100%;
-                max-width: 400px;
-                text-align: center;
-                padding: 15px;
-                background: #fff;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                box-sizing: border-box;
-            }
-            .audio-container h3 {
-                margin: 0 0 10px 0;
-                font-size: 1.1em;
-            }
-            audio {
-                width: 100%;
-            }
-        </style>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div class="container">
-            <h1>Media Houses</h1>
-        <hr>
+        <main class="container">
+            <header>
+                <h1>Media Houses</h1>
+                <hr>
+            </header>
 
-        <h2>TV Stations</h2>
-        <div class="media-grid">
-            <video id="rtv-video" width="400" controls></video>
-            <video id="kc2-video" width="400" controls></video>
-        </div>
+            <section>
+                <h2>TV Stations</h2>
+                <div class="media-grid">
+                    <video id="rtv-video" width="400" controls></video>
+                    <video id="kc2-video" width="400" controls></video>
+                </div>
+            </section>
 
-        <h2>Radio Stations</h2>
-        <div class="media-grid">
-            <iframe src="https://tunein.com/embed/player/s281307/" style="width:400px; height:100px;" scrolling="no" frameborder="no"></iframe>
-            <iframe src="https://tunein.com/embed/player/s274564/" style="width:400px; height:100px;" scrolling="no" frameborder="no"></iframe>
-        </div>
+            <section>
+                <h2>Radio Stations</h2>
+                <div class="media-grid">
+                    <iframe src="https://tunein.com/embed/player/s281307/" style="width:400px; height:100px;" scrolling="no" frameborder="no"></iframe>
+                    <a href="https://tunein.com/station/?stationid=274564&amp;utm_medium=referral&amp;utm_content=s274564&amp;utm_source=geminiEmbedArt&amp;st=174" target="_blank" class="artwork" id="artwork"><div class="artworkOverlay visible"><div class="play-button paused"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"></circle><path class="svg-icon" d="M9.56,16.86a.48.48,0,0,0,.78.38l6.14-4.85a.49.49,0,0,0,.19-.38.47.47,0,0,0-.19-.38L10.34,6.78a.46.46,0,0,0-.3-.11.54.54,0,0,0-.21,0,.49.49,0,0,0-.27.44Z" fill-rule="evenodd"></path></svg></div></div><img src="https://cdn-radiotime-logos.tunein.com/s274564d.png" alt="Media Art"></a>
+                </div>
+            </section>
 
-        <h3>RBA Radio Stations</h3>
-        <div class="media-grid">
-            <div class="audio-container">
-                <h3>Radio Rwanda</h3>
-                <audio controls src="https://listen.rba.co.rw:8008/rwanda" type="audio/mpeg"></audio>
-            </div>
-            <div class="audio-container">
-                <h3>Magic FM</h3>
-                <audio controls src="https://listen.rba.co.rw:8008/magicfm" type="audio/mpeg"></audio>
-            </div>
-            <div class="audio-container">
-                <h3>Radio Rubavu</h3>
-                <audio controls src="https://listen.rba.co.rw:8008/rubavu" type="audio/mpeg"></audio>
-            </div>
-            <div class="audio-container">
-                <h3>Radio Nyagatare</h3>
-                <audio controls src="https://listen.rba.co.rw:8008/nyagatare" type="audio/mpeg"></audio>
-            </div>
-            <div class="audio-container">
-                <h3>Radio Inteko</h3>
-                <audio controls src="https://listen.rba.co.rw:8008/inteko" type="audio/mpeg"></audio>
-            </div>
-            <div class="audio-container">
-                <h3>Radio Huye</h3>
-                <audio controls src="https://listen.rba.co.rw:8008/huye" type="audio/mpeg"></audio>
-            </div>
-            <div class="audio-container">
-                <h3>Radio Musanze</h3>
-                <audio controls src="https://listen.rba.co.rw:8008/musanze" type="audio/mpeg"></audio>
-            </div>
-            <div class="audio-container">
-                <h3>Radio Rusizi</h3>
-                <audio controls src="https://listen.rba.co.rw:8008/rusizi" type="audio/mpeg"></audio>
-            </div>
-        </div>
-    </div>
+            <section>
+                <h3>RBA Radio Stations</h3>
+                <div class="media-grid">
+                    <div class="audio-container">
+                        <h3>Radio Rwanda</h3>
+                        <audio controls src="https://listen.rba.co.rw:8008/rwanda" type="audio/mpeg"></audio>
+                    </div>
+                    <div class="audio-container">
+                        <h3>Magic FM</h3>
+                        <audio controls src="https://listen.rba.co.rw:8085/mgcfm" type="audio/mpeg"></audio>
+                    </div>
+                </div>
+            </section>
+        </main>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script>
-      var video = document.getElementById('rtv-video');
-      var hlsUrl = 'https://5c46fa289c89f.streamlock.net:443/rtv25/rtv/playlist.m3u8';
-      if(Hls.isSupported()) {
-        var hls = new Hls();
-        hls.loadSource(hlsUrl);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED,function() {
-          video.play();
-        });
-      }
-
-      var kc2Video = document.getElementById('kc2-video');
-      var kc2HlsUrl = 'https://5c46fa289c89f.streamlock.net:443/kc2/kc2/playlist.m3u8';
-      if(Hls.isSupported()) {
-        var kc2Hls = new Hls();
-        kc2Hls.loadSource(kc2HlsUrl);
-        kc2Hls.attachMedia(kc2Video);
-        kc2Hls.on(Hls.Events.MANIFEST_PARSED,function() {
-          kc2Video.play();
-        });
-      }
-    </script>
+    <script src="script.js"></script>
     </body>
 </html>
