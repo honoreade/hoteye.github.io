@@ -1,4 +1,4 @@
-# Rwandan Media Player - hoteye.github.io
+# Rwandan Media Player
 
 This project is a simple, single-page web application that provides embedded media players for various Rwandan TV and radio stations. It's designed to be a central hub for accessing popular local media streams directly in your browser.
 
