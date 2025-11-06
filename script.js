@@ -12,4 +12,3 @@ function setupHlsPlayer(videoId, hlsUrl) {
 
 setupHlsPlayer('rtv-video', 'https://5c46fa289c89f.streamlock.net:443/rtv25/rtv/playlist.m3u8');
 setupHlsPlayer('kc2-video', 'https://5c46fa289c89f.streamlock.net:443/kc2/kc2/playlist.m3u8');
-setupHlsPlayer('tv-garden-video', 'https://prod-sports-cmaf-sfr.akamaized.net/cmaf/live/1017849/5320253/index.m3u8');
