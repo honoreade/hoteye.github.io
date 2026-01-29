@@ -1,70 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Media Houses</title>
-        <meta name="description" content="A collection of embedded media from various media houses.">
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <main class="container">
-            <header>
-                <h1>Media Houses</h1>
-                <hr>
-            </header>
 
-            <section>
-                <h2>TV Stations</h2>
-                <div class="media-grid">
-                    <div class="video-wrapper">
-                        <video id="rtv-video" width="400" controls></video>
-                        <div class="play-overlay" id="rtv-overlay">
-                            <span class="play-button"></span>
-                        </div>
-                    </div>
-                    <div class="video-wrapper">
-                        <video id="kc2-video" width="400" controls></video>
-                        <div class="play-overlay" id="kc2-overlay">
-                            <span class="play-button"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="media-grid">
-                    <iframe title="TV Garden Player" src="https://tv.garden/rw" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </section>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Houses | Live TV & Radio</title>
+    <meta name="description" content="Premium access to Rwanda's top media houses. Watch TV and listen to radio live.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
 
-            <section>
-                <h2>Radio Stations</h2>
-                <div class="media-grid">
-                    <div class="audio-container">
-                        <h3>B&B FM</h3>
-                        <iframe title="B&B FM TuneIn Player" src="https://tunein.com/embed/player/s281307/" style="width:100%; height:100px;" scrolling="no" frameborder="no"></iframe>
-                    </div>
-                    <div class="audio-container">
-                        <h3>Radio 1</h3>
-                        <p>This station is currently unavailable for direct embedding. You can listen live on TuneIn.</p>
-                        <a href="https://tunein.com/radio/Radio1-Rwanda-911-s274564/" target="_blank" class="listen-link">Listen on TuneIn</a>
-                    </div>
-                </div>
-            </section>
+<body>
 
-            <section>
-                <h3>RBA Radio Stations</h3>
-                <div class="media-grid">
-                    <div class="audio-container">
-                        <h3>Radio Rwanda</h3>
-                        <audio controls src="https://listen.rba.co.rw:8008/rwanda" type="audio/mpeg"></audio>
-                    </div>
-                    <div class="audio-container">
-                        <h3>Magic FM</h3>
-                        <audio controls src="https://listen.rba.co.rw:8085/mgcfm" type="audio/mpeg"></audio>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fa-solid fa-play-circle"></i> MediaHub
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="page-header">
+            <h1>Live Channels</h1>
+            <p>Stream your favorite Rwandan TV and Radio stations in real-time.</p>
+        </header>
+
+        <section>
+            <h2>TV Stations</h2>
+            <div class="media-grid">
+                <div class="video-wrapper">
+                    <video id="rtv-video" width="400" controls></video>
+                    <div class="play-overlay" id="rtv-overlay">
+                        <span class="play-button"></span>
                     </div>
                 </div>
-            </section>
-        </main>
+                <div class="video-wrapper">
+                    <video id="kc2-video" width="400" controls></video>
+                    <div class="play-overlay" id="kc2-overlay">
+                        <span class="play-button"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="media-grid">
+                <iframe title="TV Garden Player" src="https://tv.garden/rw" width="100%" height="400" frameborder="0"
+                    allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section>
+            <h2>Radio Stations</h2>
+            <div class="media-grid">
+                <div class="audio-container">
+                    <h3>B&B FM</h3>
+                    <iframe title="B&B FM TuneIn Player" src="https://tunein.com/embed/player/s281307/"
+                        style="width:100%; height:100px;" scrolling="no" frameborder="no"></iframe>
+                </div>
+                <div class="audio-container">
+                    <h3>Radio 1</h3>
+                    <p>This station is currently unavailable for direct embedding. You can listen live on TuneIn.</p>
+                    <a href="https://tunein.com/radio/Radio1-Rwanda-911-s274564/" target="_blank"
+                        class="listen-link">Listen on TuneIn</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3>RBA Radio Stations</h3>
+            <div class="media-grid">
+                <div class="audio-container">
+                    <h3>Radio Rwanda</h3>
+                    <audio controls src="https://listen.rba.co.rw:8008/rwanda" type="audio/mpeg"></audio>
+                </div>
+                <div class="audio-container">
+                    <h3>Magic FM</h3>
+                    <audio controls src="https://listen.rba.co.rw:8085/mgcfm" type="audio/mpeg"></audio>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 MediaHub. bringing you the best of Rwandan media.</p>
+            <div class="footer-links">
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="script.js"></script>
-    </body>
+</body>
+
 </html>
