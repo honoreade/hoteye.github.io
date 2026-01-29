@@ -34,36 +34,80 @@
         <section>
             <h2>TV Stations</h2>
             <div class="media-grid">
-                <div class="video-wrapper">
-                    <video id="rtv-video" width="400" controls></video>
-                    <div class="play-overlay" id="rtv-overlay">
-                        <span class="play-button"></span>
+                <!-- RTV -->
+                <div class="channel-card">
+                    <h3>Rwanda TV</h3>
+                    <div class="video-wrapper">
+                        <video id="rtv-video" width="400" controls></video>
+                        <div class="play-overlay" id="rtv-overlay">
+                            <span class="play-button"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="video-wrapper">
-                    <video id="kc2-video" width="400" controls></video>
-                    <div class="play-overlay" id="kc2-overlay">
-                        <span class="play-button"></span>
+
+                <!-- KC2 -->
+                <div class="channel-card">
+                    <h3>KC2</h3>
+                    <div class="video-wrapper">
+                        <video id="kc2-video" width="400" controls></video>
+                        <div class="play-overlay" id="kc2-overlay">
+                            <span class="play-button"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="media-grid">
-                <iframe title="TV Garden Player" src="https://tv.garden/rw" width="100%" height="400" frameborder="0"
-                    allowfullscreen></iframe>
+
+                <!-- TV Garden -->
+                <div class="channel-card">
+                    <h3>TV Garden</h3>
+                    <iframe title="TV Garden Player" src="https://tv.garden/rw" width="100%" height="225"
+                        frameborder="0" allowfullscreen></iframe>
+                </div>
             </div>
         </section>
 
         <section>
             <h2>Radio Stations</h2>
             <div class="media-grid">
+                <!-- B&B FM -->
                 <div class="audio-container">
                     <h3>B&B FM</h3>
                     <iframe title="B&B FM TuneIn Player" src="https://tunein.com/embed/player/s281307/"
                         style="width:100%; height:100px;" scrolling="no" frameborder="no"></iframe>
                 </div>
+
+                <!-- Radio 10 -->
+                <div class="audio-container">
+                    <h3>Radio 10</h3>
+                    <iframe title="Radio 10 TuneIn Player" src="https://tunein.com/embed/player/s111718/"
+                        style="width:100%; height:100px;" scrolling="no" frameborder="no"></iframe>
+                </div>
+
+                <!-- Royal FM -->
+                <div class="audio-container">
+                    <h3>Royal FM</h3>
+                    <iframe title="Royal FM TuneIn Player" src="https://tunein.com/embed/player/s299778/"
+                        style="width:100%; height:100px;" scrolling="no" frameborder="no"></iframe>
+                </div>
+
+                <!-- Flash FM -->
+                <div class="audio-container">
+                    <h3>Flash FM</h3>
+                    <iframe title="Flash FM TuneIn Player" src="https://tunein.com/embed/player/s295790/"
+                        style="width:100%; height:100px;" scrolling="no" frameborder="no"></iframe>
+                </div>
+
+                <!-- KT Radio -->
+                <div class="audio-container">
+                    <h3>KT Radio</h3>
+                    <p>Listen live on TuneIn.</p>
+                    <a href="https://tunein.com/radio/KT-Radio-967-s191763/" target="_blank" class="listen-link">Listen
+                        on TuneIn</a>
+                </div>
+
+                <!-- Radio 1 -->
                 <div class="audio-container">
                     <h3>Radio 1</h3>
-                    <p>This station is currently unavailable for direct embedding. You can listen live on TuneIn.</p>
+                    <p>Listen live on TuneIn.</p>
                     <a href="https://tunein.com/radio/Radio1-Rwanda-911-s274564/" target="_blank"
                         class="listen-link">Listen on TuneIn</a>
                 </div>
