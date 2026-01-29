@@ -1,3 +1,52 @@
+/* --- TV Video Overlay Styles --- */
+.video-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s, opacity 0.3s;
+    z-index: 2;
+}
+
+.play-overlay:hover {
+    background: rgba(0,0,0,0.7);
+}
+
+.play-button {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    position: relative;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.play-button::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 18px;
+    width: 0;
+    height: 0;
+    border-top: 17px solid transparent;
+    border-bottom: 17px solid transparent;
+    border-left: 24px solid #222;
+}
+.play-overlay[hidden] {
+    display: none;
+}
 body {
     font-family: sans-serif;
     margin: 0;
