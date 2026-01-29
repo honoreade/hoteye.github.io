@@ -22,3 +22,10 @@ The application includes the following embedded media:
 - **CSS3:** For styling the page, including a responsive grid layout for the media players.
 - **JavaScript:** To handle the video stream playback.
 - **HLS.js:** A JavaScript library used to play HLS (HTTP Live Streaming) video streams for the TV stations.
+
+## Connect
+
+Stay updated and connect with the developer:
+
+- **[Follow on X (Twitter)](https://x.com/HonoreIRAD)**
+- **[Connect on LinkedIn](https://www.linkedin.com/in/honore-iradukunda)**
