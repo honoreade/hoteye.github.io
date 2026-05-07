@@ -17,7 +17,7 @@ function setupHlsPlayerOverlay(videoId, overlayId, hlsUrl) {
   }
 
   function startStream() {
-    if (!hlsLoaded && Hls.isSupported()) {
+    if (!hlsLoaded && typeof Hls !== 'undefined' && Hls.isSupported()) {
       hlsInstance = new Hls();
       hlsInstance.loadSource(hlsUrl);
       hlsInstance.attachMedia(video);
