@@ -39,6 +39,7 @@ function setupHlsPlayerOverlay(videoId, overlayId, hlsUrl) {
       });
       hlsLoaded = true;
     } else {
+      video.src = hlsUrl;
       video.play();
     }
     hideOverlay();
