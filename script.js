@@ -32,6 +32,12 @@ function setupHlsPlayerOverlay(videoId, overlayId, hlsUrl) {
         }
       });
       hlsLoaded = true;
+    } else if (!hlsLoaded && video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = hlsUrl;
+      video.addEventListener('loadedmetadata', function () {
+        video.play();
+      });
+      hlsLoaded = true;
     } else {
       video.play();
     }
