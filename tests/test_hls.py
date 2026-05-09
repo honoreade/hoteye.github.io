@@ -64,12 +64,12 @@ class TestHLSSupport(unittest.TestCase):
                 window.playCalled = false;
                 window.srcSet = null;
 
-                const originalCanPlayType = HTMLVideoElement.prototype.canPlayType;
+                window.originalCanPlayType = HTMLVideoElement.prototype.canPlayType;
                 HTMLVideoElement.prototype.canPlayType = function(type) {
                     if (type === 'application/vnd.apple.mpegurl') {
                         return 'probably';
                     }
-                    return originalCanPlayType.call(this, type);
+                    return window.originalCanPlayType.call(this, type);
                 };
 
                 const video = document.querySelector('video');
@@ -110,6 +110,10 @@ class TestHLSSupport(unittest.TestCase):
             self.assertIsNotNone(src_set, "Source should be set in fallback case")
             self.assertTrue(src_set.endswith('.m3u8'), f"Source should be set to an HLS URL (.m3u8) in fallback case, got {src_set}")
 
+            # Restore mocked global to avoid cross-test effects
+            page.evaluate('''() => {
+                HTMLVideoElement.prototype.canPlayType = window.originalCanPlayType;
+            }''')
             browser.close()
 
     def test_hls_supported_initialization(self):
