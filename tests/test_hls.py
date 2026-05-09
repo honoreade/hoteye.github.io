@@ -64,15 +64,34 @@ class TestHLSSupport(unittest.TestCase):
                 window.playCalled = false;
                 window.srcSet = null;
                 const video = document.querySelector('video');
+
+                const origSrcDescriptor = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'src');
+                Object.defineProperty(video, 'src', {
+                    set: function(val) {
+                        window.srcSet = val;
+                        origSrcDescriptor.set.call(this, val);
+                    },
+                    get: function() {
+                        return origSrcDescriptor.get.call(this);
+                    }
+                });
+
                 video.play = function() {
                     window.playCalled = true;
-                    window.srcSet = this.src;
                     return Promise.resolve();
                 };
             """)
 
             # Click the first overlay
             page.dispatch_event(".play-overlay", "click")
+
+            # Dispatch loadedmetadata since canPlayType sets src and waits for this event
+            page.evaluate("""
+                const video = document.querySelector('video');
+                if (video.src) {
+                    video.dispatchEvent(new Event('loadedmetadata'));
+                }
+            """)
 
             # Check if play was called
             play_called = page.evaluate("window.playCalled")
@@ -143,6 +162,136 @@ class TestHLSSupport(unittest.TestCase):
             self.assertIsNotNone(hls_info)
             self.assertTrue(hls_info['url'].endswith('.m3u8'))
             self.assertTrue(hls_info['hasMedia'])
+
+            browser.close()
+
+
+    def test_overlay_state_on_events(self):
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context()
+            page = context.new_page()
+
+            # Mock Hls.isSupported to return false to easily control play event
+            page.add_init_script('''
+                window.Hls = {
+                    isSupported: () => false
+                };
+            ''')
+
+            def block_external(route):
+                url = route.request.url
+                if "localhost" in url:
+                    route.continue_()
+                else:
+                    route.abort()
+            page.route("**/*", block_external)
+
+            page.goto("http://localhost:8000", wait_until="commit")
+            page.wait_for_selector(".play-overlay", state="attached")
+
+            # Check initial state: overlay should be visible
+            overlay_hidden_initially = page.evaluate("document.querySelector('#rtv-overlay').hasAttribute('hidden')")
+            self.assertFalse(overlay_hidden_initially, "Overlay should be visible initially")
+
+            # Trigger play event manually to simulate play starting and verify overlay hides
+            page.evaluate('''
+                const video = document.querySelector('#rtv-video');
+                video.dispatchEvent(new Event('play'));
+            ''')
+
+            overlay_hidden_after_play = page.evaluate("document.querySelector('#rtv-overlay').hasAttribute('hidden')")
+            self.assertTrue(overlay_hidden_after_play, "Overlay should be hidden after play event")
+
+            # Trigger pause event with currentTime > 0 and not ended
+            page.evaluate('''
+                const video = document.querySelector('#rtv-video');
+                video.currentTime = 10;
+                Object.defineProperty(video, 'ended', { value: false });
+                video.dispatchEvent(new Event('pause'));
+            ''')
+
+            overlay_hidden_after_pause_middle = page.evaluate("document.querySelector('#rtv-overlay').hasAttribute('hidden')")
+            self.assertTrue(overlay_hidden_after_pause_middle, "Overlay should stay hidden when paused in the middle")
+
+            # Trigger pause event with currentTime == 0
+            page.evaluate('''
+                const video = document.querySelector('#rtv-video');
+                video.currentTime = 0;
+                video.dispatchEvent(new Event('pause'));
+            ''')
+
+            overlay_hidden_after_pause_start = page.evaluate("document.querySelector('#rtv-overlay').hasAttribute('hidden')")
+            self.assertFalse(overlay_hidden_after_pause_start, "Overlay should be visible when paused at the start")
+
+            browser.close()
+
+    def test_hls_error_handling(self):
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context()
+            page = context.new_page()
+
+            page.add_init_script('''
+                window.hlsInstances = [];
+                window.Hls = class {
+                    static isSupported() { return true; }
+                    constructor() {
+                        this.url = null;
+                        this.listeners = {};
+                        this.destroyed = false;
+                        window.hlsInstances.push(this);
+                    }
+                    loadSource(url) { this.url = url; }
+                    attachMedia(media) { this.media = media; }
+                    on(event, callback) {
+                        this.listeners[event] = callback;
+                    }
+                    destroy() { this.destroyed = true; }
+
+                    // Helper to trigger events
+                    triggerError(fatal) {
+                        if (this.listeners['hlsError']) {
+                            this.listeners['hlsError'](null, { fatal: fatal });
+                        }
+                    }
+                };
+                window.Hls.Events = {
+                    MANIFEST_PARSED: 'hlsManifestParsed',
+                    ERROR: 'hlsError'
+                };
+            ''')
+
+            def block_external(route):
+                url = route.request.url
+                if "localhost" in url:
+                    route.continue_()
+                else:
+                    route.abort()
+            page.route("**/*", block_external)
+
+            page.goto("http://localhost:8000", wait_until="commit")
+            page.wait_for_selector(".play-overlay", state="attached")
+
+            # Click to start stream and initialize HLS
+            page.dispatch_event("#rtv-overlay", "click")
+
+            # Verify it's hidden after startStream is called
+            overlay_hidden = page.evaluate("document.querySelector('#rtv-overlay').hasAttribute('hidden')")
+            self.assertTrue(overlay_hidden, "Overlay should be hidden when stream starts")
+
+            # Trigger fatal error
+            page.evaluate('''
+                const inst = window.hlsInstances[0];
+                inst.triggerError(true);
+            ''')
+
+            # Verify overlay is shown and instance is destroyed
+            overlay_hidden_after_err = page.evaluate("document.querySelector('#rtv-overlay').hasAttribute('hidden')")
+            self.assertFalse(overlay_hidden_after_err, "Overlay should be shown on fatal error")
+
+            is_destroyed = page.evaluate("window.hlsInstances[0].destroyed")
+            self.assertTrue(is_destroyed, "Hls instance should be destroyed on fatal error")
 
             browser.close()
 
