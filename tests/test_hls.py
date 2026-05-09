@@ -64,9 +64,20 @@ class TestHLSSupport(unittest.TestCase):
                 window.playCalled = false;
                 window.srcSet = null;
                 const video = document.querySelector('video');
+
+                // Intercept src setting
+                Object.defineProperty(video, 'src', {
+                    set: function(val) {
+                        window.srcSet = val;
+                        this.setAttribute('src', val);
+                    },
+                    get: function() {
+                        return this.getAttribute('src');
+                    }
+                });
+
                 video.play = function() {
                     window.playCalled = true;
-                    window.srcSet = this.src;
                     return Promise.resolve();
                 };
             """)
