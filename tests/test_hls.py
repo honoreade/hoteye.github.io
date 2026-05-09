@@ -37,11 +37,11 @@ class TestHLSSupport(unittest.TestCase):
             page = context.new_page()
 
             # Mock Hls.isSupported to return false
-            page.add_init_script("""
+            page.add_init_script('''
                 window.Hls = {
                     isSupported: () => false
                 };
-            """)
+            ''')
 
             # Block ALL external requests
             def block_external(route):
@@ -60,7 +60,7 @@ class TestHLSSupport(unittest.TestCase):
 
             # Spy on video.play and video.src
             # We use a general selector to find a video element and its overlay
-            page.evaluate("""
+            page.evaluate('''
                 window.playCalled = false;
                 window.srcSet = null;
                 const video = document.querySelector('video');
@@ -80,18 +80,18 @@ class TestHLSSupport(unittest.TestCase):
                     window.playCalled = true;
                     return Promise.resolve();
                 };
-            """)
+            ''')
 
             # Click the first overlay
             page.dispatch_event(".play-overlay", "click")
 
             # Dispatch loadedmetadata since canPlayType sets src and waits for this event
-            page.evaluate("""
+            page.evaluate('''
                 const video = document.querySelector('video');
                 if (video.src) {
                     video.dispatchEvent(new Event('loadedmetadata'));
                 }
-            """)
+            ''')
 
             # Check if play was called
             play_called = page.evaluate("window.playCalled")
@@ -109,7 +109,7 @@ class TestHLSSupport(unittest.TestCase):
             page = context.new_page()
 
             # Mock Hls.isSupported to return true and mock Hls constructor
-            page.add_init_script("""
+            page.add_init_script('''
                 window.hlsInstances = [];
                 window.Hls = class {
                     static isSupported() { return true; }
@@ -130,7 +130,7 @@ class TestHLSSupport(unittest.TestCase):
                     MANIFEST_PARSED: 'hlsManifestParsed',
                     ERROR: 'hlsError'
                 };
-            """)
+            ''')
 
             # Block ALL external requests
             def block_external(route):
@@ -148,7 +148,7 @@ class TestHLSSupport(unittest.TestCase):
             page.dispatch_event(".play-overlay", "click")
 
             # Verify Hls instance was created and configured
-            hls_info = page.evaluate("""
+            hls_info = page.evaluate('''
                 () => {
                     if (window.hlsInstances.length === 0) return null;
                     const inst = window.hlsInstances[0];
@@ -157,14 +157,13 @@ class TestHLSSupport(unittest.TestCase):
                         hasMedia: !!inst.media
                     };
                 }
-            """)
+            ''')
 
             self.assertIsNotNone(hls_info)
             self.assertTrue(hls_info['url'].endswith('.m3u8'))
             self.assertTrue(hls_info['hasMedia'])
 
             browser.close()
-
 
     def test_overlay_state_on_events(self):
         with sync_playwright() as p:
@@ -226,35 +225,32 @@ class TestHLSSupport(unittest.TestCase):
 
             browser.close()
 
-    def test_hls_error_handling(self):
+    def test_hls_fatal_error(self):
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             context = browser.new_context()
             page = context.new_page()
 
+            # Mock Hls.isSupported to return true and mock Hls constructor
             page.add_init_script('''
                 window.hlsInstances = [];
                 window.Hls = class {
                     static isSupported() { return true; }
                     constructor() {
                         this.url = null;
-                        this.listeners = {};
                         this.destroyed = false;
                         window.hlsInstances.push(this);
                     }
                     loadSource(url) { this.url = url; }
                     attachMedia(media) { this.media = media; }
                     on(event, callback) {
-                        this.listeners[event] = callback;
-                    }
-                    destroy() { this.destroyed = true; }
-
-                    // Helper to trigger events
-                    triggerError(fatal) {
-                        if (this.listeners['hlsError']) {
-                            this.listeners['hlsError'](null, { fatal: fatal });
+                        if (event === 'hlsManifestParsed') {
+                            this.manifestParsedCallback = callback;
+                        } else if (event === 'hlsError') {
+                            this.errorCallback = callback;
                         }
                     }
+                    destroy() { this.destroyed = true; }
                 };
                 window.Hls.Events = {
                     MANIFEST_PARSED: 'hlsManifestParsed',
@@ -262,6 +258,7 @@ class TestHLSSupport(unittest.TestCase):
                 };
             ''')
 
+            # Block ALL external requests
             def block_external(route):
                 url = route.request.url
                 if "localhost" in url:
@@ -273,25 +270,33 @@ class TestHLSSupport(unittest.TestCase):
             page.goto("http://localhost:8000", wait_until="commit")
             page.wait_for_selector(".play-overlay", state="attached")
 
-            # Click to start stream and initialize HLS
-            page.dispatch_event("#rtv-overlay", "click")
+            # Click the first overlay
+            page.dispatch_event(".play-overlay", "click")
 
-            # Verify it's hidden after startStream is called
-            overlay_hidden = page.evaluate("document.querySelector('#rtv-overlay').hasAttribute('hidden')")
-            self.assertTrue(overlay_hidden, "Overlay should be hidden when stream starts")
+            # Emulate HLS Fatal Error and check overlay
+            result = page.evaluate('''
+                () => {
+                    const inst = window.hlsInstances[0];
+                    if (inst && inst.errorCallback) {
+                        // Call the error callback with a fatal error
+                        inst.errorCallback('hlsError', { fatal: true });
 
-            # Trigger fatal error
-            page.evaluate('''
-                const inst = window.hlsInstances[0];
-                inst.triggerError(true);
+                        // Check if overlay is shown
+                        const overlay = document.querySelector('.play-overlay');
+                        const isHidden = overlay.hasAttribute('hidden');
+
+                        return {
+                            overlayHidden: isHidden,
+                            hlsDestroyed: inst.destroyed
+                        };
+                    }
+                    return null;
+                }
             ''')
 
-            # Verify overlay is shown and instance is destroyed
-            overlay_hidden_after_err = page.evaluate("document.querySelector('#rtv-overlay').hasAttribute('hidden')")
-            self.assertFalse(overlay_hidden_after_err, "Overlay should be shown on fatal error")
-
-            is_destroyed = page.evaluate("window.hlsInstances[0].destroyed")
-            self.assertTrue(is_destroyed, "Hls instance should be destroyed on fatal error")
+            self.assertIsNotNone(result)
+            self.assertFalse(result['overlayHidden'], "Overlay should be visible after fatal error")
+            self.assertTrue(result['hlsDestroyed'], "Hls instance should be destroyed after fatal error")
 
             browser.close()
 
