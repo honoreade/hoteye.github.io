@@ -17,7 +17,7 @@ function setupHlsPlayerOverlay(videoId, overlayId, hlsUrl) {
   }
 
   function startStream() {
-    if (!hlsLoaded && Hls.isSupported()) {
+    if (!hlsLoaded && typeof Hls !== 'undefined' && Hls.isSupported()) {
       hlsInstance = new Hls();
       hlsInstance.loadSource(hlsUrl);
       hlsInstance.attachMedia(video);
@@ -32,7 +32,14 @@ function setupHlsPlayerOverlay(videoId, overlayId, hlsUrl) {
         }
       });
       hlsLoaded = true;
+    } else if (!hlsLoaded && video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = hlsUrl;
+      video.addEventListener('loadedmetadata', function () {
+        video.play();
+      });
+      hlsLoaded = true;
     } else {
+      video.src = hlsUrl;
       video.play();
     }
     hideOverlay();
